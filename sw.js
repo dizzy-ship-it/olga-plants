@@ -1,5 +1,5 @@
 const CACHE = 'plants-v7';
-const FILES = ['/', '/manifest.json', '/icon.png', '/icon-512.png'];
+const FILES = ['/olga-plants/', '/olga-plants/manifest.json', '/olga-plants/icon.png', '/olga-plants/icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)));

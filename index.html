@@ -198,7 +198,7 @@
       overflow: hidden;
       transition: max-height 0.35s ease;
     }
-    .card.open .card-details { max-height: 600px; }
+    .card.open .card-details { max-height: 900px; }
 
     .details-inner {
       border-top: 1px solid var(--border);
@@ -488,6 +488,50 @@
       margin-top: 4px;
     }
 
+    /* ── Plant photos ────────────────────────────────────────── */
+    .plant-photo {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-preview {
+      width: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      max-height: 260px;
+      display: block;
+    }
+    .btn-photo {
+      background: var(--green-light);
+      color: var(--green);
+      border: 1.5px dashed var(--green-mid);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 14px;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .btn-photo:active { background: var(--green-mid); }
+    .btn-photo-remove {
+      background: var(--red-bg);
+      color: var(--red);
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
     /* Emoji picker row */
     .emoji-row {
       display: flex;
@@ -515,7 +559,7 @@
 
 <header>
   <h1>🌿 My Plants</h1>
-  <p>Olga's Plant Collection &nbsp;·&nbsp; <span id="app-version">v10</span></p>
+  <p>Olga's Plant Collection &nbsp;·&nbsp; <span id="app-version">v11</span></p>
 </header>
 
 <div class="tabs">
@@ -857,6 +901,66 @@ function deletePlant(list, key, idx, e) {
 }
 
 // ─────────────────────────────────────────────────────────────
+//  PHOTOS — stored in localStorage as resized base64 JPEGs
+// ─────────────────────────────────────────────────────────────
+function plantKey(name) {
+  return 'photo_' + name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+}
+function loadPhoto(name) {
+  return localStorage.getItem(plantKey(name));
+}
+function savePhoto(name, dataURL) {
+  try {
+    localStorage.setItem(plantKey(name), dataURL);
+  } catch(e) {
+    alert('Storage full — try a lower-quality photo or remove an old one.');
+  }
+}
+function removePhotoAndRender(colIdx, e) {
+  e.stopPropagation();
+  const plant = collection[colIdx];
+  if (!plant) return;
+  localStorage.removeItem(plantKey(plant.name));
+  renderCollection();
+}
+function triggerPhotoUpload(colIdx, e) {
+  e.stopPropagation();
+  const plant = collection[colIdx];
+  if (!plant) return;
+  const input = document.createElement('input');
+  input.type   = 'file';
+  input.accept = 'image/*';
+  input.onchange = function() {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      resizeImage(ev.target.result, 1000, function(resized) {
+        savePhoto(plant.name, resized);
+        renderCollection();
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+function resizeImage(dataURL, maxPx, callback) {
+  const img = new Image();
+  img.onload = function() {
+    let w = img.width, h = img.height;
+    if (w > maxPx || h > maxPx) {
+      if (w > h) { h = Math.round(h * maxPx / w); w = maxPx; }
+      else        { w = Math.round(w * maxPx / h); h = maxPx; }
+    }
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+    callback(canvas.toDataURL('image/jpeg', 0.82));
+  };
+  img.src = dataURL;
+}
+
+// ─────────────────────────────────────────────────────────────
 //  TABS
 // ─────────────────────────────────────────────────────────────
 function switchTab(tab) {
@@ -891,22 +995,42 @@ function renderCollection() {
     el.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><p>No plants found</p></div>`;
     return;
   }
-  el.innerHTML = filtered.map((p, i) => `
+  el.innerHTML = filtered.map((p, i) => {
+    const colIdx = collection.indexOf(p);
+    const photo  = loadPhoto(p.name);
+    const iconHTML = photo
+      ? `<div class="plant-icon" style="background:none;padding:0;overflow:hidden;"><img src="${photo}" class="plant-photo" /></div>`
+      : `<div class="plant-icon">${p.icon}</div>`;
+    const photoSection = photo ? `
+      <div class="detail-row" style="flex-direction:column;gap:8px;">
+        <img src="${photo}" class="photo-preview" onclick="event.stopPropagation()" />
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn-photo" style="flex:1;" onclick="triggerPhotoUpload(${colIdx},event)">📷 Change Photo</button>
+          <button class="btn-photo-remove" onclick="removePhotoAndRender(${colIdx},event)">✕ Remove</button>
+        </div>
+      </div>
+    ` : `
+      <div class="detail-row">
+        <button class="btn-photo" onclick="triggerPhotoUpload(${colIdx},event)">📷 Add a Photo of Your Plant</button>
+      </div>
+    `;
+    return `
     <div class="card" id="cc${i}" onclick="toggleCard('cc${i}')">
       <div class="card-top">
-        <div class="plant-icon">${p.icon}</div>
+        ${iconHTML}
         <div class="card-info">
           <div class="card-name">${p.name}</div>
           <div class="card-sci">${p.sci}</div>
           <div class="card-badges">
             <span class="badge badge-type">${p.type}</span>
-            ${p._custom ? `<button class="btn-delete" onclick="deletePlant('collection',null,${collection.indexOf(p)},event)">✕ Remove</button>` : ''}
+            ${p._custom ? `<button class="btn-delete" onclick="deletePlant('collection',null,${colIdx},event)">✕ Remove</button>` : ''}
           </div>
         </div>
         <span class="chevron">⌄</span>
       </div>
       <div class="card-details">
         <div class="details-inner">
+          ${photoSection}
           <div class="detail-row">
             <span class="detail-icon">☀️</span>
             <div>
@@ -938,7 +1062,7 @@ function renderCollection() {
         </div>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
 // ─────────────────────────────────────────────────────────────

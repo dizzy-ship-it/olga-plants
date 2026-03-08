@@ -1,4 +1,4 @@
-const CACHE = 'plants-v12';
+const CACHE = 'plants-v13';
 const STATIC = ['/icon.png', '/icon-512.png', '/manifest.json'];
 
 // Cache static assets only (icons, manifest)

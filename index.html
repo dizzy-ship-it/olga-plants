@@ -559,7 +559,7 @@
 
 <header>
   <h1>🌿 My Plants</h1>
-  <p>Olga's Plant Collection &nbsp;·&nbsp; <span id="app-version">v15</span></p>
+  <p>Olga's Plant Collection &nbsp;·&nbsp; <span id="app-version">v16</span></p>
 </header>
 
 <div class="tabs">
@@ -706,6 +706,11 @@
       </div>
 
       <div class="form-group">
+        <label class="form-label">📏 Indoor Size</label>
+        <input class="form-input" id="f-size" type="text" placeholder="e.g. 3–5 ft tall" />
+      </div>
+
+      <div class="form-group">
         <label class="form-label">📝 Notes</label>
         <textarea class="form-textarea" id="f-notes" placeholder="Any care tips, where you got it, special notes..."></textarea>
       </div>
@@ -729,6 +734,7 @@ const collection = [
       light:    "Bright indirect to direct sunlight",
       water:    "Every 1–2 weeks — let the top 2\" dry out first",
       humidity: "Average (40–60%)",
+      size:     "6–10 ft tall indoors",
       notes:    "Grows large — make sure it has space! Wipe leaves occasionally to keep them glossy."
     }
   },
@@ -741,6 +747,7 @@ const collection = [
       light:    "Low to bright indirect light — very adaptable",
       water:    "Every 2–3 weeks — let soil dry out well between waterings",
       humidity: "Average",
+      size:     "4–6 ft tall indoors",
       notes:    "⚠️ Toxic to pets. Avoid fluoride in water — can cause brown leaf tips. Very tolerant of neglect!"
     }
   },
@@ -753,43 +760,44 @@ const collection = [
       light:    "Bright indirect light — no direct sun",
       water:    "Keep soil lightly moist; let the top inch dry before watering",
       humidity: "High (60%+) — loves a pebble tray or humidifier nearby",
+      size:     "2–3 ft tall indoors",
       notes:    "3 corms rooting in a bucket — fingers crossed 🤞 If they pull through: dark wavy leaves with bold white veins, very dramatic. ⚠️ Toxic to pets. Goes dormant in winter — don't panic if it drops leaves."
     }
   }
 ];
 
 const wishlist = [
-  { name:"Hindu Rope Hoya",          sci:"Hoya compacta",                   type:"Hoya",         icon:"🌀", hanging:true,  care:"Easy",        notes:"Slow grower; loves bright indirect light; fragrant star-shaped blooms. ✅ Pet-safe." },
-  { name:"Raindrop Peperomia",        sci:"Peperomia polybotrya",             type:"Peperomia",    icon:"💧", hanging:false, care:"Easy",        notes:"Thick glossy teardrop leaves; very drought tolerant. ✅ Pet-safe." },
-  { name:"String of Turtles",         sci:"Peperomia prostrata",              type:"Peperomia",    icon:"🐢", hanging:true,  care:"Easy–Medium", notes:"Tiny turtle-shell patterned leaves; trailing beauty. ✅ Pet-safe." },
-  { name:"Chinese Money Plant",       sci:"Pilea peperomioides",              type:"Pilea",        icon:"🪙", hanging:false, care:"Easy",        notes:"Produces little pups; rotate regularly for even growth. ✅ Pet-safe." },
-  { name:"Mini Monstera",             sci:"Rhaphidophora tetrasperma",        type:"Aroid",        icon:"🌱", hanging:false, care:"Easy",        notes:"Fast grower; loves to climb a moss pole. ⚠️ Toxic to pets." },
-  { name:"Philodendron Gloriosum",    sci:"Philodendron gloriosum",           type:"Philodendron", icon:"🍃", hanging:false, care:"Easy",        notes:"Velvety heart-shaped leaves with white veins; crawls along soil. ⚠️ Toxic to pets." },
-  { name:"Philodendron Melano",       sci:"Philodendron melanochrysum",       type:"Philodendron", icon:"🖤", hanging:false, care:"Medium",      notes:"Dark velvety leaves with a gold sheen; gorgeous climber. ⚠️ Toxic to pets." },
-  { name:"Syngonium Strawberry Ice",  sci:"Syngonium 'Strawberry Ice'",      type:"Syngonium",    icon:"🍓", hanging:true,  care:"Easy",        notes:"Dreamy pink/cream variegation; trails or climbs. ⚠️ Toxic to pets." },
-  { name:"Syngonium Albo Variegatum", sci:"Syngonium 'Albo Variegatum'",     type:"Syngonium",    icon:"🤍", hanging:true,  care:"Easy",        notes:"Bold white splashes; very striking contrast. ⚠️ Toxic to pets." },
-  { name:"Syngonium Milk Confetti",   sci:"Syngonium 'Milk Confetti'",       type:"Syngonium",    icon:"🎨", hanging:true,  care:"Easy",        notes:"Pink/white speckles; every single leaf is unique. ⚠️ Toxic to pets." },
-  { name:"String of Pearls",          sci:"Curio rowleyanus",                 type:"Succulent",    icon:"🫧", hanging:true,  care:"Easy–Medium", notes:"Hates overwatering; needs bright light; very rewarding. ⚠️ Toxic to pets." },
-  { name:"Burro's Tail",              sci:"Sedum morganianum",                type:"Succulent",    icon:"🌵", hanging:true,  care:"Easy",        notes:"Dramatic cascading stems; drought tolerant; handle gently. ⚠️ Mildly toxic to pets." },
-  { name:"Calathea Network Plant",    sci:"Calathea musaica",                 type:"Calathea",     icon:"🕸️", hanging:false, care:"Medium",      notes:"Stunning mosaic pattern; one of the easier calatheas — filtered water helps. ✅ Pet-safe." },
-  { name:"Polka Dot Begonia",         sci:"Begonia maculata",                 type:"Begonia",      icon:"🔴", hanging:false, care:"Medium",      notes:"Angel wing leaves with silver polka dots and red undersides; loves humidity. ⚠️ Toxic to pets." },
-  { name:"Satin Pothos",              sci:"Scindapsus pictus 'Exotica'",     type:"Scindapsus",   icon:"✨", hanging:true,  care:"Easy",        notes:"Silvery satin sheen on dark green leaves; trails beautifully and looks expensive. ⚠️ Toxic to pets." },
-  { name:"Tradescantia Nanouk",       sci:"Tradescantia nanouk",              type:"Tradescantia", icon:"💜", hanging:true,  care:"Easy",        notes:"Pastel pink, purple and green; fast grower; stunning in a hanging pot. ⚠️ Toxic to pets." },
-  { name:"Ponytail Palm",             sci:"Beaucarnea recurvata",             type:"Statement",    icon:"🌴", hanging:false, care:"Very Easy",   notes:"Not actually a palm! Stores water in its bulbous base; basically indestructible. ✅ Pet-safe." },
-  { name:"Fishbone Cactus",           sci:"Epiphyllum anguliger",             type:"Cactus",       icon:"🌸", hanging:true,  care:"Easy–Medium", notes:"Zigzag stems look wild; produces enormous, fragrant night-blooming flowers. ✅ Pet-safe." },
-  { name:"Neon Pothos",               sci:"Epipremnum aureum 'Neon'",         type:"Aroid",        icon:"💚", hanging:true,  care:"Very Easy",   notes:"Bright chartreuse/neon green heart-shaped leaves; trails beautifully; tolerates low light; practically unkillable. ⚠️ Toxic to pets." },
-  { name:"Moonlight Scindapsus",      sci:"Scindapsus treubii 'Moonlight'",   type:"Scindapsus",   icon:"🌙", hanging:true,  care:"Easy",        notes:"Long, narrow leaves with a soft silver-green sheen; elegant and easy; trails or climbs a moss pole beautifully. ⚠️ Toxic to pets." },
-  { name:"Velvet Cardboard Anthurium",sci:"Anthurium clarinervium",           type:"Anthurium",    icon:"🖤", hanging:false, care:"Medium",      notes:"Velvety dark green heart-shaped leaves with striking bright white veins; easier than it looks; loves humidity. ⚠️ Toxic to pets." },
-  { name:"Watermelon Peperomia",      sci:"Peperomia argyreia",               type:"Peperomia",    icon:"🍉", hanging:false, care:"Easy",        notes:"Striped exactly like a tiny watermelon; compact; drought tolerant; one of the most fun-looking peperomias. ✅ Pet-safe." },
-  { name:"Cleopatra Snake Plant",     sci:"Sansevieria 'Cleopatra'",          type:"Sansevieria",  icon:"🏺", hanging:false, care:"Very Easy",   notes:"Short cylindrical-ish leaves with incredibly intricate etched patterns; looks almost hand-carved; drought tolerant. ⚠️ Toxic to pets." },
-  { name:"Cylindrical Snake Plant",   sci:"Sansevieria cylindrica",           type:"Sansevieria",  icon:"🗡️", hanging:false, care:"Very Easy",   notes:"Round spike-shaped leaves; very architectural; can be braided when young; extremely drought tolerant. ⚠️ Toxic to pets." },
-  { name:"Red Sister Cordyline",      sci:"Cordyline fruticosa 'Red Sister'", type:"Statement",    icon:"💜", hanging:false, care:"Easy",        notes:"Deep burgundy/purple strappy leaves; bold statement plant; tolerates a range of light; wipe leaves to keep them vibrant. ⚠️ Toxic to pets." },
-  { name:"Lime Zinger Xanthosoma",    sci:"Xanthosoma mafaffa 'Lime Zinger'", type:"Aroid",        icon:"💛", hanging:false, care:"Easy–Medium", notes:"Electric chartreuse/lime arrow-shaped leaves; stunning contrast against dark foliage; loves bright indirect light. ⚠️ Toxic to pets." },
-  { name:"Miss Muffet Caladium",      sci:"Caladium 'Miss Muffet'",           type:"Caladium",     icon:"🌿", hanging:false, care:"Medium",      notes:"Light green/cream leaves speckled with burgundy spots; compact and unique; goes dormant in winter. ⚠️ Toxic to pets." },
-  { name:"Black Magic Colocasia",     sci:"Colocasia esculenta 'Black Magic'",type:"Statement",    icon:"🖤", hanging:false, care:"Medium",      notes:"Enormous dark purple/black elephant ear leaves; dramatic statement plant; loves humidity and moisture. ⚠️ Toxic to pets." },
-  { name:"Burgundy Ripple Peperomia", sci:"Peperomia caperata 'Burgundy Ripple'", type:"Peperomia", icon:"🍷", hanging:false, care:"Easy",        notes:"Deep burgundy rippled leaves with gorgeous texture; compact; drought tolerant; one of the most striking peperomias. ✅ Pet-safe." },
-  { name:"Variegated Frydek",          sci:"Alocasia micholitziana 'Frydek Variegata'", type:"Aroid", icon:"🤍", hanging:false, care:"Medium",    notes:"Velvety dark green leaves with striking white variegation; rarer and more sought-after than the regular Frydek; needs bright indirect light and high humidity. ⚠️ Toxic to pets." },
-  { name:"Giant Taro",                 sci:"Alocasia macrorrhiza",                type:"Statement", icon:"🌿", hanging:false, care:"Easy–Medium", notes:"Enormous upright bright green elephant ear leaves; can reach 6ft+ indoors; one of the most dramatic statement aroids you can grow. ⚠️ Toxic to pets." },
+  { name:"Hindu Rope Hoya",          sci:"Hoya compacta",                   type:"Hoya",         icon:"🌀", hanging:true,  care:"Easy",        size:"1–2 ft trailing", notes:"Slow grower; loves bright indirect light; fragrant star-shaped blooms. ✅ Pet-safe." },
+  { name:"Raindrop Peperomia",        sci:"Peperomia polybotrya",             type:"Peperomia",    icon:"💧", hanging:false, care:"Easy",        size:"8–12 inches", notes:"Thick glossy teardrop leaves; very drought tolerant. ✅ Pet-safe." },
+  { name:"String of Turtles",         sci:"Peperomia prostrata",              type:"Peperomia",    icon:"🐢", hanging:true,  care:"Easy–Medium", size:"Trails 1–2 ft", notes:"Tiny turtle-shell patterned leaves; trailing beauty. ✅ Pet-safe." },
+  { name:"Chinese Money Plant",       sci:"Pilea peperomioides",              type:"Pilea",        icon:"🪙", hanging:false, care:"Easy",        size:"10–12 inches", notes:"Produces little pups; rotate regularly for even growth. ✅ Pet-safe." },
+  { name:"Mini Monstera",             sci:"Rhaphidophora tetrasperma",        type:"Aroid",        icon:"🌱", hanging:false, care:"Easy",        size:"Up to 12 ft climbing", notes:"Fast grower; loves to climb a moss pole. ⚠️ Toxic to pets." },
+  { name:"Philodendron Gloriosum",    sci:"Philodendron gloriosum",           type:"Philodendron", icon:"🍃", hanging:false, care:"Easy",        size:"3–4 ft wide (crawling)", notes:"Velvety heart-shaped leaves with white veins; crawls along soil. ⚠️ Toxic to pets." },
+  { name:"Philodendron Melano",       sci:"Philodendron melanochrysum",       type:"Philodendron", icon:"🖤", hanging:false, care:"Medium",      size:"Up to 10 ft climbing", notes:"Dark velvety leaves with a gold sheen; gorgeous climber. ⚠️ Toxic to pets." },
+  { name:"Syngonium Strawberry Ice",  sci:"Syngonium 'Strawberry Ice'",      type:"Syngonium",    icon:"🍓", hanging:true,  care:"Easy",        size:"3–6 ft trailing", notes:"Dreamy pink/cream variegation; trails or climbs. ⚠️ Toxic to pets." },
+  { name:"Syngonium Albo Variegatum", sci:"Syngonium 'Albo Variegatum'",     type:"Syngonium",    icon:"🤍", hanging:true,  care:"Easy",        size:"3–6 ft trailing", notes:"Bold white splashes; very striking contrast. ⚠️ Toxic to pets." },
+  { name:"Syngonium Milk Confetti",   sci:"Syngonium 'Milk Confetti'",       type:"Syngonium",    icon:"🎨", hanging:true,  care:"Easy",        size:"3–6 ft trailing", notes:"Pink/white speckles; every single leaf is unique. ⚠️ Toxic to pets." },
+  { name:"String of Pearls",          sci:"Curio rowleyanus",                 type:"Succulent",    icon:"🫧", hanging:true,  care:"Easy–Medium", size:"Trails 2–3 ft", notes:"Hates overwatering; needs bright light; very rewarding. ⚠️ Toxic to pets." },
+  { name:"Burro's Tail",              sci:"Sedum morganianum",                type:"Succulent",    icon:"🌵", hanging:true,  care:"Easy",        size:"Trails up to 4 ft", notes:"Dramatic cascading stems; drought tolerant; handle gently. ⚠️ Mildly toxic to pets." },
+  { name:"Calathea Network Plant",    sci:"Calathea musaica",                 type:"Calathea",     icon:"🕸️", hanging:false, care:"Medium",      size:"Up to 2 ft tall", notes:"Stunning mosaic pattern; one of the easier calatheas — filtered water helps. ✅ Pet-safe." },
+  { name:"Polka Dot Begonia",         sci:"Begonia maculata",                 type:"Begonia",      icon:"🔴", hanging:false, care:"Medium",      size:"3–5 ft tall", notes:"Angel wing leaves with silver polka dots and red undersides; loves humidity. ⚠️ Toxic to pets." },
+  { name:"Satin Pothos",              sci:"Scindapsus pictus 'Exotica'",     type:"Scindapsus",   icon:"✨", hanging:true,  care:"Easy",        size:"Trails 4–6 ft", notes:"Silvery satin sheen on dark green leaves; trails beautifully and looks expensive. ⚠️ Toxic to pets." },
+  { name:"Tradescantia Nanouk",       sci:"Tradescantia nanouk",              type:"Tradescantia", icon:"💜", hanging:true,  care:"Easy",        size:"Trails 1–2 ft", notes:"Pastel pink, purple and green; fast grower; stunning in a hanging pot. ⚠️ Toxic to pets." },
+  { name:"Ponytail Palm",             sci:"Beaucarnea recurvata",             type:"Statement",    icon:"🌴", hanging:false, care:"Very Easy",   size:"6–8 ft tall", notes:"Not actually a palm! Stores water in its bulbous base; basically indestructible. ✅ Pet-safe." },
+  { name:"Fishbone Cactus",           sci:"Epiphyllum anguliger",             type:"Cactus",       icon:"🌸", hanging:true,  care:"Easy–Medium", size:"Trails 2–3 ft", notes:"Zigzag stems look wild; produces enormous, fragrant night-blooming flowers. ✅ Pet-safe." },
+  { name:"Neon Pothos",               sci:"Epipremnum aureum 'Neon'",         type:"Aroid",        icon:"💚", hanging:true,  care:"Very Easy",   size:"Trails 6–10 ft", notes:"Bright chartreuse/neon green heart-shaped leaves; trails beautifully; tolerates low light; practically unkillable. ⚠️ Toxic to pets." },
+  { name:"Moonlight Scindapsus",      sci:"Scindapsus treubii 'Moonlight'",   type:"Scindapsus",   icon:"🌙", hanging:true,  care:"Easy",        size:"Trails/climbs 4–6 ft", notes:"Long, narrow leaves with a soft silver-green sheen; elegant and easy; trails or climbs a moss pole beautifully. ⚠️ Toxic to pets." },
+  { name:"Velvet Cardboard Anthurium",sci:"Anthurium clarinervium",           type:"Anthurium",    icon:"🖤", hanging:false, care:"Medium",      size:"1.5–2 ft tall", notes:"Velvety dark green heart-shaped leaves with striking bright white veins; easier than it looks; loves humidity. ⚠️ Toxic to pets." },
+  { name:"Watermelon Peperomia",      sci:"Peperomia argyreia",               type:"Peperomia",    icon:"🍉", hanging:false, care:"Easy",        size:"6–8 inches", notes:"Striped exactly like a tiny watermelon; compact; drought tolerant; one of the most fun-looking peperomias. ✅ Pet-safe." },
+  { name:"Cleopatra Snake Plant",     sci:"Sansevieria 'Cleopatra'",          type:"Sansevieria",  icon:"🏺", hanging:false, care:"Very Easy",   size:"6–8 inches", notes:"Short cylindrical-ish leaves with incredibly intricate etched patterns; looks almost hand-carved; drought tolerant. ⚠️ Toxic to pets." },
+  { name:"Cylindrical Snake Plant",   sci:"Sansevieria cylindrica",           type:"Sansevieria",  icon:"🗡️", hanging:false, care:"Very Easy",   size:"2–4 ft tall", notes:"Round spike-shaped leaves; very architectural; can be braided when young; extremely drought tolerant. ⚠️ Toxic to pets." },
+  { name:"Red Sister Cordyline",      sci:"Cordyline fruticosa 'Red Sister'", type:"Statement",    icon:"💜", hanging:false, care:"Easy",        size:"3–5 ft tall", notes:"Deep burgundy/purple strappy leaves; bold statement plant; tolerates a range of light; wipe leaves to keep them vibrant. ⚠️ Toxic to pets." },
+  { name:"Lime Zinger Xanthosoma",    sci:"Xanthosoma mafaffa 'Lime Zinger'", type:"Aroid",        icon:"💛", hanging:false, care:"Easy–Medium", size:"3–5 ft tall", notes:"Electric chartreuse/lime arrow-shaped leaves; stunning contrast against dark foliage; loves bright indirect light. ⚠️ Toxic to pets." },
+  { name:"Miss Muffet Caladium",      sci:"Caladium 'Miss Muffet'",           type:"Caladium",     icon:"🌿", hanging:false, care:"Medium",      size:"12–18 inches", notes:"Light green/cream leaves speckled with burgundy spots; compact and unique; goes dormant in winter. ⚠️ Toxic to pets." },
+  { name:"Black Magic Colocasia",     sci:"Colocasia esculenta 'Black Magic'",type:"Statement",    icon:"🖤", hanging:false, care:"Medium",      size:"4–6 ft tall, 4 ft wide", notes:"Enormous dark purple/black elephant ear leaves; dramatic statement plant; loves humidity and moisture. ⚠️ Toxic to pets." },
+  { name:"Burgundy Ripple Peperomia", sci:"Peperomia caperata 'Burgundy Ripple'", type:"Peperomia", icon:"🍷", hanging:false, care:"Easy",        size:"6–8 inches", notes:"Deep burgundy rippled leaves with gorgeous texture; compact; drought tolerant; one of the most striking peperomias. ✅ Pet-safe." },
+  { name:"Variegated Frydek",          sci:"Alocasia micholitziana 'Frydek Variegata'", type:"Aroid", icon:"🤍", hanging:false, care:"Medium",    size:"2–3 ft tall", notes:"Velvety dark green leaves with striking white variegation; rarer and more sought-after than the regular Frydek; needs bright indirect light and high humidity. ⚠️ Toxic to pets." },
+  { name:"Giant Taro",                 sci:"Alocasia macrorrhiza",                type:"Statement", icon:"🌿", hanging:false, care:"Easy–Medium", size:"6–15 ft tall", notes:"Enormous upright bright green elephant ear leaves; can reach 6ft+ indoors; one of the most dramatic statement aroids you can grow. ⚠️ Toxic to pets." },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -839,7 +847,7 @@ function pickEmoji(el) {
   selectedEmoji = el.dataset.emoji;
 }
 function resetForm() {
-  ['f-name','f-sci','f-light','f-water','f-humidity','f-notes'].forEach(id => {
+  ['f-name','f-sci','f-light','f-water','f-humidity','f-size','f-notes'].forEach(id => {
     document.getElementById(id).value = '';
   });
   document.getElementById('f-hanging').checked = false;
@@ -865,6 +873,7 @@ function savePlant() {
         light:    document.getElementById('f-light').value.trim()    || '—',
         water:    document.getElementById('f-water').value.trim()    || '—',
         humidity: document.getElementById('f-humidity').value.trim() || '—',
+        size:     document.getElementById('f-size').value.trim()     || '—',
         notes:    document.getElementById('f-notes').value.trim()    || '—',
       }
     };
@@ -880,6 +889,7 @@ function savePlant() {
       icon:    selectedEmoji,
       hanging: document.getElementById('f-hanging').checked,
       care:    document.getElementById('f-care').value,
+      size:    document.getElementById('f-size').value.trim() || '',
       notes:   document.getElementById('f-notes').value.trim() || '—',
     };
     customWishlist.push(plant);
@@ -1067,6 +1077,13 @@ function renderCollection() {
             </div>
           </div>
           <div class="detail-row">
+            <span class="detail-icon">📏</span>
+            <div>
+              <div class="detail-label">Indoor Size</div>
+              <div class="detail-val">${p.care.size || '—'}</div>
+            </div>
+          </div>
+          <div class="detail-row">
             <span class="detail-icon">📝</span>
             <div>
               <div class="detail-label">Notes</div>
@@ -1143,6 +1160,14 @@ function wishCard(p, id) {
       </div>
       <div class="card-details">
         <div class="details-inner">
+          ${p.size ? `
+          <div class="detail-row">
+            <span class="detail-icon">📏</span>
+            <div>
+              <div class="detail-label">Indoor Size</div>
+              <div class="detail-val">${p.size}</div>
+            </div>
+          </div>` : ''}
           <div class="detail-row">
             <span class="detail-icon">📝</span>
             <div>

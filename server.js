@@ -22,6 +22,13 @@ const server = http.createServer((req, res) => {
   const file = path.join(DIR, url);
   const ext  = path.extname(file);
 
+  // Prevent path traversal: resolved path must stay within DIR
+  if (!file.startsWith(DIR + path.sep) && file !== DIR) {
+    res.writeHead(403);
+    res.end('Forbidden');
+    return;
+  }
+
   fs.readFile(file, (err, data) => {
     if (err) {
       res.writeHead(404);
